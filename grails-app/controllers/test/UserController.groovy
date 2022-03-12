@@ -78,6 +78,9 @@ class UserController {
             return
         }
 
+        User userToDelete = userService.get(id)
+        UserRole.findAllByUser(userToDelete)*.delete()
+
         userService.delete(id)
 
         request.withFormat {
