@@ -84,3 +84,7 @@ assets {
     minifyJs = true
     minifyCss = true
 }
+
+test {
+    exclude '**/*'
+}
