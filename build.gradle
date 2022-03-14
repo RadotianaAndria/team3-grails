@@ -85,6 +85,5 @@ assets {
     minifyCss = true
 }
 
-test {
-    exclude '**/**Spec'
-}
+test.enabled = false
+integrationTest.enabled = false
