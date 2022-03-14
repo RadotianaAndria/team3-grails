@@ -86,5 +86,5 @@ assets {
 }
 
 test {
-    exclude '**/*'
+    exclude '**/**Spec'
 }
