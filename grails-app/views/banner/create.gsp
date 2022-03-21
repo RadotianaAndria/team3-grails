@@ -28,6 +28,9 @@
             <g:form resource="${this.banner}" method="POST">
                 <fieldset class="form">
                     <f:all bean="banner"/>
+%{--                    <g:uploadForm name="myUpload">--}%
+%{--                        <input type="file" name="myFile" />--}%
+%{--                    </g:uploadForm>--}%
                 </fieldset>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />

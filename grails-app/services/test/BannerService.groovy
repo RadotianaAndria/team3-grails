@@ -2,6 +2,8 @@ package test
 
 import grails.gorm.services.Service
 
+import javax.servlet.http.HttpServletRequest
+
 @Service(Banner)
 interface BannerService {
 
@@ -14,5 +16,4 @@ interface BannerService {
     void delete(Serializable id)
 
     Banner save(Banner banner)
-
 }

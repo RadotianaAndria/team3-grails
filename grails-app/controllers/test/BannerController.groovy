@@ -1,8 +1,13 @@
 package test
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
-import static org.springframework.http.HttpStatus.*
+import org.joda.time.DateTime
 
+import javax.servlet.http.HttpServletRequest
+
+import static org.springframework.http.HttpStatus.*
+@Secured(value=["hasRole('ROLE_ADMIN')"])
 class BannerController {
 
     BannerService bannerService
@@ -29,8 +34,11 @@ class BannerController {
         }
 
         try {
+//            if(banner.created == null) banner.setCreated(new DateTime(2022,03,16,18,04))
             bannerService.save(banner)
+//            uploadImage(banner, request)
         } catch (ValidationException e) {
+            e.printStackTrace()
             respond banner.errors, view:'create'
             return
         }
@@ -96,4 +104,15 @@ class BannerController {
             '*'{ render status: NOT_FOUND }
         }
     }
+
+
+//    def uploadImage(Banner banner, HttpServletRequest request){
+//        if(request.getFile("bannerImage") && !request.getFile("bannerImage").filename.equals("")){
+//            String image = FileUtil.uploadBannerImage(request.getFile("bannerImage"))
+//            if(!image.equals("")){
+//                banner.name = image
+//                banner.save(flush:true)
+//            }
+//        }
+//    }
 }
