@@ -62,7 +62,7 @@ dependencies {
     compile 'org.grails.plugins:spring-security-core:3.2.3'
     compile "org.grails.plugins:spring-security-rest:2.0.0.RC1"
 //
-//    compile 'com.github.jsimone:webapp-runner:8.0.30.2'
+    compile 'com.github.jsimone:webapp-runner:8.5.11.3'
 }
 
 bootRun {
