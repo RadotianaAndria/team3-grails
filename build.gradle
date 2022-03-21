@@ -87,12 +87,12 @@ assets {
     minifyCss = true
 }
 
-//task copyToLib(type: Copy) {
-//    into "$buildDir/server"
-//    from(configurations.compile) {
-//        include "webapp-runner*"
-//    }
-//}
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.compile) {
+        include "webapp-runner*"
+    }
+}
 
 test.enabled = false
 integrationTest.enabled = false
