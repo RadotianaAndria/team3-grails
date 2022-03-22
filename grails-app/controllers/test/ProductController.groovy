@@ -11,13 +11,18 @@ class ProductController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond productService.list(params), model:[productCount: productService.count()]
+        params.max = 5
+        respond productService.list(params)
     }
 
     def show(Long id) {
         respond productService.get(id)
     }
+
+//    def showTop5(){
+//        def productInstanceHQL = Product.executeQuery("select p from Product p", [max: 5])
+//        println productInstanceHQL
+//    }
 
     def create() {
         respond new Product(params)
