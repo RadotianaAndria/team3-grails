@@ -24,10 +24,10 @@ class BootStrap {
                     it.clear()
                 }
         }
-        def category = new Category(name: "Drink").save()
-        ["Eau vive", "Coca cola", "Sprite", "Fanta orange", "Fanta ananas", "Fanta pomme","Bonbon anglais"].each {
+        def category = new Category(name: "Tee shirt").save()
+        ["Marvel M", "DC XS", "LoL M", "Star wars XL", "Disney L", "Code S"].each {
             def productname ->
-                def productInstance = new Product(name: productname, price: 4000, inStock: 12, description: "Boisson hygienique produit par Star Madagascar", photo: "jus.jpg")
+                def productInstance = new Product(name: productname, price: 4000, inStock: 12, description: "Tee shirt de bonne qualité", photo: "teeshirt.jpg")
                 productInstance.category = category;
                 productInstance.save()
         }
