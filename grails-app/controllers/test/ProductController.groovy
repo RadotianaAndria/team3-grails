@@ -3,7 +3,7 @@ package test
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
-@Secured(value=["hasRole('ROLE_ADMIN')"])
+@Secured(value=["hasRole('ROLE_CLIENT')"])
 class ProductController {
 
     ProductService productService
@@ -18,12 +18,6 @@ class ProductController {
     def show(Long id) {
         respond productService.get(id)
     }
-
-//    def showTop5(){
-//        def productInstanceHQL = Product.executeQuery("select p from Product p", [max: 5])
-//        println productInstanceHQL
-//    }
-
     def create() {
         respond new Product(params)
     }
