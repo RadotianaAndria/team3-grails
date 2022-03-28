@@ -12,6 +12,7 @@ class UrlMappings {
         "/api/users" (resources: "user")
         "/api/products" (resources: "product")
         "/api/categories" (resources: "category")
+        "/api/banners" (resources: "banner")
 
 
         "/"(view:"/index")

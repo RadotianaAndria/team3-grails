@@ -2,7 +2,6 @@ package test
 
 import grails.rest.Resource
 
-@Resource
 class Product {
     String name
     Float price

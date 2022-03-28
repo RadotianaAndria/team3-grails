@@ -7,7 +7,7 @@ import org.joda.time.DateTime
 import javax.servlet.http.HttpServletRequest
 
 import static org.springframework.http.HttpStatus.*
-@Secured(value=["hasRole('ROLE_ADMIN')"])
+@Secured(value=["hasRole('ROLE_CLIENT')"])
 class BannerController {
 
     BannerService bannerService
