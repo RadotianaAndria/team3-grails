@@ -1,7 +1,9 @@
 package test
 
+import grails.rest.Resource
+
+@Resource
 class Product {
-//    int idCategory
     String name
     Float price
     int inStock

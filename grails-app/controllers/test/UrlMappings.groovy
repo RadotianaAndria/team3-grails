@@ -10,6 +10,9 @@ class UrlMappings {
         }
 
         "/api/users" (resources: "user")
+        "/api/products" (resources: "product")
+        "/api/categories" (resources: "category")
+
 
         "/"(view:"/index")
         "500"(view:'/error')
