@@ -114,6 +114,21 @@ class UserController {
 
     }
 
+    def removeItemFromCart(Long idUser, Long idProduct){
+        try {
+            userService.removeItemFromCart(idUser, idProduct)
+        } catch (ValidationException e) {
+            println(e.getMessage())
+            return
+        }
+        request.withFormat {
+            form multipartForm {
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render(view:"user/cart", model:[id_user:idUser, cart:userService.get(idUser).cart, isAddingItemIntoCart: false,products:productService.list(params)]) }
+        }
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {
