@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.*
 class UserController {
 
     UserService userService
+    ProductService productService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -18,6 +19,10 @@ class UserController {
 
     def show(Long id) {
         respond userService.get(id)
+    }
+
+    def cart(Long id) {
+        [ id_user:id, cart:userService.get(id).cart, products:productService.list(params)]
     }
 
     def create() {
@@ -90,6 +95,23 @@ class UserController {
             }
             '*'{ render status: NO_CONTENT }
         }
+    }
+
+    def addItemIntoCart(Long idUser, Long idProduct, Integer quantity) {
+        try {
+            userService.addItemToCart(idUser, idProduct, quantity)
+            println("ID : "+idUser+"\nPRODUCT : "+idProduct+"\nQTY : "+quantity)
+        } catch (ValidationException e) {
+            println(e.getMessage())
+            return
+        }
+        request.withFormat {
+            form multipartForm {
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render(view:"user/cart", model:[id_user:idUser, cart:userService.get(idUser).cart, isAddingItemIntoCart: false,products:productService.list(params)]) }
+        }
+
     }
 
     protected void notFound() {

@@ -20,6 +20,8 @@ class User implements Serializable {
     boolean accountLocked
     boolean passwordExpired
 
+    Cart cart;
+
     Set<Role> getAuthorities() {
         (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
     }
@@ -27,9 +29,10 @@ class User implements Serializable {
     static constraints = {
         password nullable: false, blank: false, password: true
         username nullable: false, blank: false, unique: true
+        cart nullable: true, blank: true
     }
 
     static mapping = {
-	    password column: '`password`'
+        password column: '`password`'
     }
 }

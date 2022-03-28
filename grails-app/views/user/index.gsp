@@ -18,8 +18,26 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
-            <f:table collection="${userList}" />
 
+            <table style="overflow: scroll">
+                <tr>
+                    <th>User</th>
+                    <th>Cart</th>
+                </tr>
+                <g:each var="user" in="${userList}">
+                    <tr>
+                        <td><g:link action="user/show" id="${user.id}">${user.username}</g:link></td>
+                        <td>
+                            <g:if test="${user.cart != null}">
+                                <g:link action="cart" id="${user.id}">${user.cart}</g:link>
+                            </g:if>
+                            <g:else>
+                                <g:link action="cart" id="${user.id}">Add</g:link>
+                            </g:else>
+                        </td>
+                    </tr>
+                </g:each>
+            </table>
             <div class="pagination">
                 <g:paginate total="${userCount ?: 0}" />
             </div>
