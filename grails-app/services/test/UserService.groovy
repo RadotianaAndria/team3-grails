@@ -29,72 +29,76 @@ abstract class UserService implements IUserService {
         Cart cart = user.cart
         //Get the product
         Product product = Product.get(idProduct)
+        if(product.inStock >= quantity) {
+            //Let's initialize the values of the cart_item
+            BigDecimal totalPrice = product.price*quantity
+            def now = new Date()
+            CartItem cartItem = new CartItem(product: product, quantity: quantity, totalPrice: totalPrice)
 
-        //Let's initialize the values of the cart_item
-        BigDecimal totalPrice = product.price*quantity
-        def now = new Date()
-        CartItem cartItem = new CartItem(product: product, quantity: quantity, totalPrice: totalPrice)
-
-        if(cart != null){
-            def command = Cart.executeQuery("select item from Cart cart " +
-                    "inner join cart.items item " +
-                    "where cart.id = :idCart and item.product.id = :idProduct",
-                    [idCart:cart.id, idProduct:idProduct])
-            command.each { item ->
-                println("ITEM : {\n QTY : "+item.getAt("quantity")+"\n TP : "+item.getAt("totalPrice")+"\n}")
-            }
-
-            if(command){
-                Integer qty = quantity
-                BigDecimal cartItemTotalPrice = totalPrice
+            if(cart != null){
+                def command = Cart.executeQuery("select item from Cart cart " +
+                        "inner join cart.items item " +
+                        "where cart.id = :idCart and item.product.id = :idProduct",
+                        [idCart:cart.id, idProduct:idProduct])
                 command.each { item ->
-                    qty = qty+item.getAt("quantity")
-                    cartItemTotalPrice = cartItemTotalPrice+item.getAt("totalPrice")
+                    println("ITEM : {\n QTY : "+item.getAt("quantity")+"\n TP : "+item.getAt("totalPrice")+"\n}")
                 }
-                if(qty>0) {
-                    CartItem.executeUpdate("UPDATE CartItem command SET command.quantity = :qty, command.totalPrice = :totalPrice, command.lastUpdatedDate = :lastUpdatedDate " +
-                            "WHERE command.product.id = :idProduct",
-                            [qty: qty, totalPrice: cartItemTotalPrice, lastUpdatedDate: new Date(), idProduct: product.id])
-                    user.cart.totalPrice = user.cart.totalPrice + totalPrice
-                    user.cart.save(flush:true, failOnError: true)
+
+                if(command){
+                    Integer qty = quantity
+                    BigDecimal cartItemTotalPrice = totalPrice
+                    command.each { item ->
+                        qty = qty+item.getAt("quantity")
+                        cartItemTotalPrice = cartItemTotalPrice+item.getAt("totalPrice")
+                    }
+                    if(qty>0) {
+                        CartItem.executeUpdate("UPDATE CartItem command SET command.quantity = :qty, command.totalPrice = :totalPrice, command.lastUpdatedDate = :lastUpdatedDate " +
+                                "WHERE command.product.id = :idProduct",
+                                [qty: qty, totalPrice: cartItemTotalPrice, lastUpdatedDate: new Date(), idProduct: product.id])
+                        user.cart.totalPrice = user.cart.totalPrice + totalPrice
+                        user.cart.save(flush:true, failOnError: true)
+                    } else {
+                        println("Quantity must be larger than the one in the cart !!!\nOr just delete the item to remove it from the cart")
+                    }
                 } else {
-                    println("Quantity must be larger than the one in the cart !!!\nOr just delete the item to remove it from the cart")
+                    if(quantity>0) {
+                        cartItem.creationDate = now
+                        cartItem.lastUpdatedDate = now
+                        cartItem.save(failOnError: true)
+
+                        user.cart.addToItems(cartItem)
+                        user.cart.totalPrice = user.cart.totalPrice + totalPrice
+                        user.cart.save(flush:true, failOnError: true)
+                    } else {
+                        println("Quantity must be positive !!!")
+                    }
                 }
+                //user.cart.save(flush:true)
             } else {
-                if(quantity>0) {
+                if(quantity>0){
                     cartItem.creationDate = now
                     cartItem.lastUpdatedDate = now
                     cartItem.save(failOnError: true)
 
-                    user.cart.addToItems(cartItem)
-                    user.cart.totalPrice = user.cart.totalPrice + totalPrice
-                    user.cart.save(flush:true, failOnError: true)
+
+                    def myNewCart = new Cart(totalPrice: totalPrice, user:user)
+                    myNewCart.addToItems(cartItem)
+                    myNewCart.save(flush:true, failOnError: true)
+
+                    user.cart = myNewCart
+                    user.save(flush:true, failOnError: true)
+
+
+                    println("USER CART : { \n   ITEMS : "+user.cart.items[0].product.name+"\n   TOTAL PRICE : "+user.cart.totalPrice+"\n}")
                 } else {
                     println("Quantity must be positive !!!")
                 }
             }
-            //user.cart.save(flush:true)
+            product.inStock = product.inStock - quantity
+            product.save(flush:true, failOnError: true)
         } else {
-            if(quantity>0){
-                cartItem.creationDate = now
-                cartItem.lastUpdatedDate = now
-                cartItem.save(failOnError: true)
-
-
-                def myNewCart = new Cart(totalPrice: totalPrice, user:user)
-                myNewCart.addToItems(cartItem)
-                myNewCart.save(flush:true, failOnError: true)
-
-                user.cart = myNewCart
-                user.save(flush:true, failOnError: true)
-
-
-                println("USER CART : { \n   ITEMS : "+user.cart.items[0].product.name+"\n   TOTAL PRICE : "+user.cart.totalPrice+"\n}")
-            } else {
-                println("Quantity must be positive !!!")
-            }
+            println("Quantity in stock sold out !!!")
         }
-
     }
 
     def removeItemFromCart(Long idUser, Long idProduct){
@@ -112,10 +116,17 @@ abstract class UserService implements IUserService {
                 totalPrice = item.getAt("totalPrice")
             }
             def commandToRemove = cart.items.find { it.id == id }
+
+            int quantity = commandToRemove.quantity
+
             cart.removeFromItems(commandToRemove)
             user.cart.totalPrice = user.cart.totalPrice - totalPrice
             user.cart.save(flush:true, failOnError: true)
             CartItem.executeUpdate("DELETE FROM CartItem command WHERE command.id = :id", [id: id])
+
+            Product product = Product.get(idProduct)
+            product.inStock = product.inStock + quantity
+            product.save(flush:true, failOnError: true)
         }
     }
 }
