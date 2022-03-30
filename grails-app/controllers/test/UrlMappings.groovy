@@ -9,7 +9,12 @@ class UrlMappings {
             }
         }
 
-        "/api/users" (resources: "user")
+        "/api/users" (resources: "user"){
+            collection{
+                "/addItemIntoCart"(controller: "user",action: "addItemIntoCart")
+                "/removeItemFromCart"(controller: "user",action: "removeItemFromCart")
+            }
+        }
         "/api/products" (resources: "product"){
             collection{
                 "/search"(controller: "product",action: "search")
