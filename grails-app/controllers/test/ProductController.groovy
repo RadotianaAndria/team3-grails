@@ -37,8 +37,6 @@ class ProductController {
                 }
             }
         }
-        def productInstanceHQL = Product.executeQuery("select p from Product p "+
-                "where p.name like :name or p.description like :name",[name: request.getParameter("keyword")], [max: 4])
         render resultList as JSON
     }
 
