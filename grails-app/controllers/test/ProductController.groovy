@@ -3,12 +3,14 @@ package test
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
+import grails.converters.JSON
+
 @Secured(value=["hasRole('ROLE_CLIENT')"])
 class ProductController {
 
     ProductService productService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",search: "POST"]
 
     def index(Integer max) {
         params.max = 5
@@ -20,6 +22,22 @@ class ProductController {
     }
     def create() {
         respond new Product(params)
+    }
+
+    def search(){
+        def jsonObject = request.JSON
+        def criteria = Product.createCriteria()
+        def keyword = jsonObject.keyword
+        def resultList = criteria.list(max: 4){
+            or{
+                like('name', '%'+keyword+'%')
+                like('description','%'+keyword+'%')
+                category{
+                    like('name','%'+keyword+'%')
+                }
+            }
+        }
+        render resultList as JSON
     }
 
     def save(Product product) {

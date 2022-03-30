@@ -3,7 +3,7 @@ package test
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
-@Secured(value=["hasRole('ROLE_ADMIN')"])
+@Secured(value=["hasRole('ROLE_CLIENT')"])
 class CategoryController {
 
     CategoryService categoryService

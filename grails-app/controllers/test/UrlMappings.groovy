@@ -10,8 +10,13 @@ class UrlMappings {
         }
 
         "/api/users" (resources: "user")
-        "/api/products" (resources: "product")
+        "/api/products" (resources: "product"){
+            collection{
+                "/search"(controller: "product",action: "search")
+            }
+        }
         "/api/categories" (resources: "category")
+        "/api/banners" (resources: "banner")
 
 
         "/"(view:"/index")
