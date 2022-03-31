@@ -20,24 +20,9 @@ class ProductController {
     def show(Long id) {
         respond productService.get(id)
     }
+
     def create() {
         respond new Product(params)
-    }
-
-    def search(){
-        def jsonObject = request.JSON
-        def criteria = Product.createCriteria()
-        def keyword = jsonObject.keyword
-        def resultList = criteria.list(max: 4){
-            or{
-                like('name', '%'+keyword+'%')
-                like('description','%'+keyword+'%')
-                category{
-                    like('name','%'+keyword+'%')
-                }
-            }
-        }
-        render resultList as JSON
     }
 
     def save(Product product) {

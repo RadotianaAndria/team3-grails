@@ -1,5 +1,6 @@
 package test
 
+import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
@@ -113,6 +114,23 @@ class UserController {
         }
 
     }
+    /*
+    def add_item_into_cart() {
+        def jsonObject = request.JSON
+        Long idUser = jsonObject.idUser
+        Long idProduct = jsonObject.idProduct
+        Integer quantity = jsonObject.quantity
+        try {
+            userService.addItemToCart(idUser, idProduct, quantity)
+        } catch (ValidationException e) {
+            println(e.getMessage())
+            return
+        }
+        //render userService.get(idUser) as JSON
+        def result = [user_info:userService.get(idUser), cart:userService.get(idUser).cart, items_in_cart:userService.get(idUser).cart.items]
+        render result as JSON
+    }
+     */
 
     def removeItemFromCart(Long idUser, Long idProduct){
         try {
@@ -128,6 +146,23 @@ class UserController {
             '*'{ render(view:"user/cart", model:[id_user:idUser, cart:userService.get(idUser).cart, isAddingItemIntoCart: false,products:productService.list(params)]) }
         }
     }
+
+    /*
+    def remove_item_from_cart() {
+        def jsonObject = request.JSON
+        Long idUser = jsonObject.idUser
+        Long idProduct = jsonObject.idProduct
+        try {
+            userService.removeItemFromCart(idUser, idProduct)
+        } catch (ValidationException e) {
+            println(e.getMessage())
+            return
+        }
+        //render userService.get(idUser) as JSON
+        def result = [user_info:userService.get(idUser), cart:userService.get(idUser).cart, items_in_cart:userService.get(idUser).cart.items]
+        render result as JSON
+    }
+     */
 
     protected void notFound() {
         request.withFormat {
