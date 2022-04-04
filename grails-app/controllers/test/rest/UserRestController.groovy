@@ -29,6 +29,12 @@ class UserRestController extends RestfulController<User>{
     }
 
     @Secured(value=["hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')"])
+    def getIdUser(String username) {
+        render userService.getIdUser(username) as JSON
+    }
+
+
+    @Secured(value=["hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')"])
     def addItemIntoCart() {
         def jsonObject = request.JSON
         Long idUser = jsonObject.idUser

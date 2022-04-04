@@ -22,6 +22,10 @@ interface IUserService {
 @Service(User)
 @Transactional
 abstract class UserService implements IUserService {
+    def getIdUser(String username){
+        return User.findByUsername(username);
+    }
+
     def addItemToCart(Long idUser, Long idProduct, Integer quantity){
         //We get the user first
         User user = User.get(idUser)

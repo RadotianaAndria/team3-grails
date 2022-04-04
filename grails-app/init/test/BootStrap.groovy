@@ -46,6 +46,12 @@ class BootStrap {
                 productInstance.save()
         }
 
+        ["Banner numero 1", "Banner numero 2", "Banner numero 3", "Banner numero 4"].each {
+            def bannerName ->
+                def bannerInstance = new Banner(name: bannerName, created: "28/03/2022")
+                bannerInstance.save()
+        }
+
     }
     def destroy = {
     }
