@@ -62,6 +62,6 @@
     <ul>
         <li>Ajout de produit(s) et/ou modification de la quantité de produit dans le panier de l'utilisateur</li>
         <li>Suppression d'un produit du panier</li>
-        <li>Gestion de stock de produits par rapport au panier</li>
+        <li>Gestion de stock de produits par rapport à la validation du panier</li>
     </ul>
 </div>

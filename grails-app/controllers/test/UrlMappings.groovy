@@ -32,6 +32,7 @@ class UrlMappings {
             collection{
                 "/addItemIntoCart"(controller: "userRest",action: "addItemIntoCart")
                 "/removeItemFromCart"(controller: "userRest",action: "removeItemFromCart")
+                "/validateCart"(controller: "userRest",action: "validateCart")
             }
         }
         "/api/products" (resources: "productRest"){

@@ -5,14 +5,15 @@ class Cart {
 
     static hasMany = [items: CartItem];
 
-    //static belongsTo = [user : User]
+    Integer isValid;
 
     static constraints = {
         items nullable: true, blank: true
-        //user unique: true
+        isValid inList: [0, 10, 20, 30]
     }
     static mapping = {
         totalPrice defaultValue: "0"
         items cascade: 'all'
+        isValid defaultValue: "0"
     }
 }

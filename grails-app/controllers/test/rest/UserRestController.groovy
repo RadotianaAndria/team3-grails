@@ -45,12 +45,28 @@ class UserRestController extends RestfulController<User>{
         render result as JSON
     }
 
+    @Secured(value=["hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')"])
     def removeItemFromCart() {
         def jsonObject = request.JSON
         Long idUser = jsonObject.idUser
         Long idProduct = jsonObject.idProduct
         try {
             userService.removeItemFromCart(idUser, idProduct)
+        } catch (ValidationException e) {
+            println(e.getMessage())
+            return
+        }
+        //render userService.get(idUser) as JSON
+        def result = [user_info:userService.get(idUser), cart:userService.get(idUser).cart, items_in_cart:userService.get(idUser).cart.items]
+        render result as JSON
+    }
+
+    @Secured(value=["hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')"])
+    def validateCart() {
+        def jsonObject = request.JSON
+        Long idUser = jsonObject.idUser
+        try {
+            userService.validateCart(idUser)
         } catch (ValidationException e) {
             println(e.getMessage())
             return
