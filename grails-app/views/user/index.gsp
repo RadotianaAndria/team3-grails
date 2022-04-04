@@ -23,6 +23,7 @@
                 <tr>
                     <th>User</th>
                     <th>Cart</th>
+                    <th>Cart status</th>
                 </tr>
                 <g:each var="user" in="${userList}">
                     <tr>
@@ -34,6 +35,27 @@
                             <g:else>
                                 <g:link action="cart" id="${user.id}">Add</g:link>
                             </g:else>
+                        </td>
+                        <td>
+                            <g:if test="${user.cart != null}">
+                                <g:if test="${user.cart.isValid < 20}">
+                                    <p class="text-danger">Cart Not Valid</p>
+                                </g:if>
+                                <g:else>
+                                    <p class="text-success">Cart Valid</p>
+                                </g:else>
+                            </g:if>
+                            <g:else>
+                                <p class="text-info">No cart yet</p>
+                            </g:else>
+                        </td>
+                        <td>
+                            <g:if test="${user.cart != null}">
+                                <g:form name="validate_cart" url="[action:'validateCart']">
+                                    <g:hiddenField name="idUser" value="${user.id}"></g:hiddenField>
+                                    <g:submitButton name="submit" value="Validate cart"/>
+                                </g:form>
+                            </g:if>
                         </td>
                     </tr>
                 </g:each>

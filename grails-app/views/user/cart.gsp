@@ -45,6 +45,7 @@
                             <g:submitButton name="submit" value="Remove"/>
 
                         </g:form>
+                        <i><b>N.B : </b> isValid < 20 : non validé</i>
                         <f:table collection="${cart.items}" />
                     </g:if>
                 </div>
