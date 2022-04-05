@@ -51,10 +51,12 @@
                         </td>
                         <td>
                             <g:if test="${user.cart != null}">
-                                <g:form name="validate_cart" url="[action:'validateCart']">
-                                    <g:hiddenField name="idUser" value="${user.id}"></g:hiddenField>
-                                    <g:submitButton name="submit" value="Validate cart"/>
-                                </g:form>
+                                <g:if test="${user.cart.isValid < 20}">
+                                    <g:form name="validate_cart" url="[action:'validateCart']">
+                                        <g:hiddenField name="idUser" value="${user.id}"></g:hiddenField>
+                                        <g:submitButton name="submit" value="Validate cart"/>
+                                    </g:form>
+                                </g:if>
                             </g:if>
                         </td>
                     </tr>

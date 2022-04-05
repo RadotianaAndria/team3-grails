@@ -12,7 +12,7 @@ class CartItem {
     Integer isValid;
 
     static constraints = {
-        product unique: true
+        product unique: false
         creationDate nullable: true, blank: true
         lastUpdatedDate nullable: true, blank: true
         isValid inList: [0, 10, 20, 30]
