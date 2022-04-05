@@ -13,7 +13,7 @@ class ProductController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",search: "POST"]
 
     def index(Integer max) {
-        params.max = 5
+        params.max = max
         respond productService.list(params)
     }
 
