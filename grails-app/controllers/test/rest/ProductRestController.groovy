@@ -19,7 +19,8 @@ class ProductRestController extends RestfulController<Product> {
     @Override
     def index(Integer max) {
         //return super.index(max)
-        render productService.list(params) as JSON
+        render Product.executeQuery("from Product where IN_STOCK > 0") as JSON
+//        render productService.list(params) as JSON
     }
 
     @Secured(value=["hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')"])
