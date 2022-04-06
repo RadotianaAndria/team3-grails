@@ -19,7 +19,7 @@ class ProductRestController extends RestfulController<Product> {
     @Override
     def index(Integer max) {
         //return super.index(max)
-        render Product.executeQuery("from Product where IN_STOCK > 0") as JSON
+        render Product.executeQuery("from Product where inStock > 0") as JSON
 //        render productService.list(params) as JSON
     }
 

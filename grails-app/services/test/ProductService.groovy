@@ -22,7 +22,7 @@ interface IProductService {
 @Transactional
 abstract class ProductService implements IProductService {
     def getTop(def max) {
-        return Product.executeQuery("from Product order by ranking DESC", [max: max])
+        return Product.executeQuery("from Product where inStock > 0 order by ranking DESC", [max: max])
     }
 
     def search(def keyword){
