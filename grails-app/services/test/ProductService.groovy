@@ -27,7 +27,7 @@ abstract class ProductService implements IProductService {
 
     def search(def keyword){
         def criteria = Product.createCriteria()
-        def resultList = criteria.list(max: 4){
+        def resultList = criteria.list(){
             or{
                 like('name', '%'+keyword+'%')
                 like('description','%'+keyword+'%')
